@@ -1,9 +1,9 @@
-create table activites(
+create table activite(
     id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(200),
     date_publication DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-    association VARCHAR(30),
-    description_activites VARCHAR (250),
+    -- association VARCHAR(30),
+    description VARCHAR (250),
     prix VARCHAR (50),
     lieu VARCHAR (200),
     infos VARCHAR (150),
@@ -15,7 +15,7 @@ create table association(
     email VARCHAR (255),
     password VARCHAR (25),
     association VARCHAR(150),
-    description_association VARCHAR (200)   
+    description VARCHAR (200)   
 );
 
-ALTER TABLE activites ADD CONSTRAINT fk_association_id FOREIGN KEY (association_id) REFERENCES association(id);
+ALTER TABLE activite ADD CONSTRAINT fk_association_id FOREIGN KEY (association_id) REFERENCES association(id);
