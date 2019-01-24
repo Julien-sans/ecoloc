@@ -1,26 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const db = require('./sql/db');
-
+const authRouter = require('./routes/auth');
+const activitesRouter = require('./routes/activites');
+const associationRouter = require('./routes/association');
 const app = express();
+
 app.use(bodyParser.json());
-
-app.get('/api/activites', (req, res) => {
-    db.query('select * from activite', (err, activite) => {
-        if(err) {
-            return res.status(500).send(err.message);
-        }
-        res.json(activite);
-    });
-});
-
-app.post('/api/activites', (req, res) => {
-    db.query('insert into activite set ?', req.body, (err, result) => {
-        if(err) {
-            return res.status(500).send(err.message);
-        }
-        res.json(result);
-    });
-});
+app.use('/api/auth', authRouter);
+app.use('/api/activites', activitesRouter);
+app.use('/api/associations', associationRouter);
 
 app.listen(8000);
