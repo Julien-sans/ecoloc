@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
-import Home from './components/authentification/Home.js';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 import LoginPage from './components/authentification/LoginPage.js';
 import CreateSpace from './components/authentification/CreateSpace';
 import ProjectList from './components/ProjectList';
+import CreateProject from './components/CreateProject';
 import ProtectedRoutes from './components/ProtectedRoutes';
 
 class App extends Component {
@@ -17,12 +17,12 @@ class App extends Component {
             <Route
               exact
               path="/"
-              component={Home}
+              component={LoginPage}
             />
             <Route
               exact
-              path="/loginpage"
-              component={LoginPage}
+              path="/createproject"
+              component={CreateProject}
             />
             <Route
               exact

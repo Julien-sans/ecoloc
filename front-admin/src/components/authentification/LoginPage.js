@@ -9,9 +9,7 @@ class LoginPage extends Component {
     this.state = {
       email: '',
       password: '',
-      errorPassword: false,
-      errorAuth: '',
-      errorEmail: '',
+      errorAuth: ''
     };
     this.updateField = this.updateField.bind(this);
     this.handleSubmitSignIn = this.handleSubmitSignIn.bind(this);

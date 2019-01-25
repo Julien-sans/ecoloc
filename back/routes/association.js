@@ -24,4 +24,10 @@ router.get('/:association_id/activites', (req, res) => {
     });
 });
 
+router.delete('/:association_id/activites/:activite_id',
+jwt({ secret: secretKey }),
+(req, res) => {
+    // récupérer activite avec id=activite_id
+    // verifier que le association_id de l'activité === req.user.id
+});
 module.exports = router;
