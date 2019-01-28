@@ -1,26 +1,46 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, { Component, Fragment } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
+import LoginPage from './components/authentification/LoginPage.js';
+import ProjectList from './components/ProjectList';
+import CreateProject from './components/CreateProject';
+import ProtectedRoutes from './components/ProtectedRoutes';
 
 class App extends Component {
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Fragment>
+        <BrowserRouter>
+          <Switch>
+            <Route
+              exact
+              path="/"
+              component={LoginPage}
+            />
+            <Route
+              exact
+              path="/createproject"
+              component={CreateProject}
+            />
+            <Route
+              exact
+              path="/editproject/:id"
+              component={CreateProject}
+            />
+            {/* <Route
+              exact
+              path="/projectlist/:association_id"
+              component={ProjectList}
+            /> */}
+            <Route
+              exact
+              path="/projectlist"
+              component={ProjectList}
+            />
+          </Switch>
+        </BrowserRouter>
+      </Fragment>
     );
   }
 }
