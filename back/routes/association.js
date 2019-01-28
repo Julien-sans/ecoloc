@@ -43,4 +43,6 @@ router.delete('/:association_id/activites/:activite_id',
         // récupérer activite avec id=activite_id
         // verifier que le association_id de l'activité === req.user.id
     });
+
+    
 module.exports = router;
