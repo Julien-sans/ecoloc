@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
-import instance from '../../helpers/instances';
+
 
 class LoginPage extends Component {
   constructor(props) {

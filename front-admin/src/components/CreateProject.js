@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import { Card, CardTitle, Container, Row, CardSubtitle, CardText } from 'reactstrap';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { editorInputForm, createActivite } from '../actions/forms';
+import {
+    editorInputForm,
+    createActiviteSuccess,
+    createActiviteFailure,
+    createActiviteRequest,
+    fetchSingleActiviteRequest,
+    fetchSingleActiviteSuccess,
+    fetchSingleActiviteFailure
+} from '../actions/forms';
 
 class CreateProject extends Component {
 
@@ -20,42 +28,65 @@ class CreateProject extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const { form, createActivite } = this.props;
-        console.log(form)
-        //createActivite(form);
+        const { form, createActiviteSuccess, createActiviteFailure, createActiviteRequest } = this.props;
+        createActiviteRequest();
         axios.post('/api/activites/activitesliste', form)
             .then(response => response.data)
-            .then(console.log)
+            .then(activite => createActiviteSuccess(activite))
+            .catch(error => createActiviteFailure(error));
+    }
+
+    componentDidMount() {
+        const { id } = this.props.match.params;
+        if (id) {
+            const {
+                fetchSingleActiviteRequest,
+                fetchSingleActiviteSuccess,
+                fetchSingleActiviteFailure
+            } = this.props;
+            fetchSingleActiviteRequest();
+            axios.get(`/api/associations/activites/${id}`)
+            .then(response => response.data)
+            .then(activites => fetchSingleActiviteSuccess(activites))
+            .catch(error => fetchSingleActiviteFailure(error));
+        }
     }
 
     render() {
+        const { title, date, prix, lieu, description, infos } = this.props.form;
         return (
             <div>
                 <h1 className="projectTitle">Créer une activité</h1>
                 <form className="d-flex flex-column justify-content-center" onSubmit={this.handleSubmit}>
 
                     <div className="form-group w-50">
-                        <input onChange={this.handleChange} name="title" type="text" className="form-control" id="title" placeholder="Titre"></input>
+                        <input
+                            onChange={this.handleChange} name="title" type="text" className="form-control" id="title" placeholder="Titre" value={title} ></input>
                     </div>
 
                     <div className="form-group w-50">
-                        <input onChange={this.handleChange} name="date" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Date"></input>
+                        <input
+                            onChange={this.handleChange} name="date" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Date" value={date} ></input>
                     </div>
 
                     <div className="form-group w-50">
-                        <textarea onChange={this.handleChange} name="description" className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <textarea
+                            onChange={this.handleChange} name="description" className="form-control" id="exampleFormControlTextarea1" rows="3" value={description}></textarea>
                     </div>
 
                     <div className="form-group w-50">
-                        <input onChange={this.handleChange} name="lieu" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Lieu"></input>
+                        <input
+                            onChange={this.handleChange} name="lieu" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Lieu" value={lieu}></input>
                     </div>
 
                     <div className="form-group w-50">
-                        <input onChange={this.handleChange} name="prix" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Prix"></input>
+                        <input
+                            onChange={this.handleChange} name="prix" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Prix" value={prix} ></input>
                     </div>
 
                     <div className="form-group w-50">
-                        <input onChange={this.handleChange} name="infos" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Infos de réservation"></input>
+                        <input
+                            onChange={this.handleChange} name="infos" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Infos de réservation" value={infos}></input>
                     </div>
 
                     <div className="d-flex justify-content-center">
@@ -82,6 +113,14 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapDispatchToProps = { editorInputForm, createActivite };
+const mapDispatchToProps = {
+    editorInputForm,
+    createActiviteSuccess,
+    createActiviteFailure,
+    createActiviteRequest,
+    fetchSingleActiviteRequest,
+    fetchSingleActiviteSuccess,
+    fetchSingleActiviteFailure
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateProject);

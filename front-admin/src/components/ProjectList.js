@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
-import { Card, CardTitle, Container, Row, CardSubtitle, CardText, Col } from 'reactstrap';
+import { 
+    Card, 
+    CardTitle, 
+    Container, 
+    Row, 
+    CardSubtitle, 
+    CardText, 
+    Col, 
+    Button } from 'reactstrap';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import {
+    fetchActiviteSuccess,
+    fetchActiviteFailure,
+    fetchActiviteRequest
+} from '../actions/forms';
 
-const ConvertDateTime = (date) => {
-    const t = date.split(/[- : T .]/)
-    const newDate = t[2] + '-' + t[1] + '-' + t[0] + ' ' + t[3] + 'h' + t[4];
-    return newDate;
-}
 
 class ProjectList extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            activites: [],
-        };
-    }
 
     componentDidMount() {
         // const { association_id } = this.props.match.params;
@@ -28,10 +31,12 @@ class ProjectList extends Component {
         // }
         // else {
         // }
+        const { fetchActiviteRequest, fetchActiviteSuccess,  fetchActiviteFailure } = this.props;
+        fetchActiviteRequest();
         axios.get(`/api/associations/activites`)
             .then(response => response.data)
-            .then(activites => this.setState({ activites }))
-            .catch(error => { console.error(error) });
+            .then(activites => fetchActiviteSuccess(activites))
+            .catch(error => fetchActiviteFailure(error));
     }
 
     disconnect = () => {
@@ -41,12 +46,12 @@ class ProjectList extends Component {
     }
 
     render() {
-        const { activites } = this.state;
-        console.log(activites)
+        const { activite } = this.props;
+        console.log(activite)
         return (
             <div>
                 <nav className="navbar sticky-top navbar-light bg-light">
-                    <a className="navbar-brand" href="#">Ecolo'Occ</a>
+                    <a className="navbar-brand" href="/">Ecolo'Occ</a>
                     <button type="button" className="btn btn-success"><Link to='/createproject'>Créer un Projet</Link></button>
                     <button onClick={this.disconnect} type="button" className="btn btn-danger">Se déconnecter</button>
                 </nav>
@@ -54,16 +59,18 @@ class ProjectList extends Component {
                 <Container fluid>
                     <Row>
                         {
-                            activites.map((activite, key) =>
+                            activite.map((activite, key) =>
                                 <Col md='4' key={key} className="my-3">
-                                    <Card className="mx-auto">
+                                    <Card className="mx-auto" outline color="success">
                                         <CardTitle>{activite.title}</CardTitle>
-                                        <CardSubtitle>{ConvertDateTime(activite.date_publication)}</CardSubtitle>
-                                        <CardSubtitle>{ConvertDateTime(activite.date)}</CardSubtitle>
+                                        <CardSubtitle>{activite.date_publication}</CardSubtitle>
+                                        <CardSubtitle>{activite.date}</CardSubtitle>
                                         <CardText>{activite.description}</CardText>
                                         <CardText>{activite.lieu}</CardText>
                                         <CardText>{activite.prix}</CardText>
                                         <CardText>{activite.infos}</CardText>
+                                        <Link to={`/editproject/${activite.id}`}>Editer l'activité</Link>
+                                        <Button>Supprimer</Button>
                                     </Card>
                                 </Col>
                             )
@@ -76,4 +83,18 @@ class ProjectList extends Component {
     }
 }
 
-export default ProjectList;
+const mapStateToProps = state => {
+    const { activite } = state;
+    return {
+        activite
+    }
+}
+
+const mapDispatchToProps = {
+    fetchActiviteRequest,
+    fetchActiviteSuccess,
+    fetchActiviteFailure
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectList);
+

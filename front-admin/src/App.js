@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 import LoginPage from './components/authentification/LoginPage.js';
-import CreateSpace from './components/authentification/CreateSpace';
 import ProjectList from './components/ProjectList';
 import CreateProject from './components/CreateProject';
 import ProtectedRoutes from './components/ProtectedRoutes';
@@ -26,8 +25,8 @@ class App extends Component {
             />
             <Route
               exact
-              path="/createspace"
-              component={CreateSpace}
+              path="/editproject/:id"
+              component={CreateProject}
             />
             {/* <Route
               exact

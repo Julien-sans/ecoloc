@@ -15,6 +15,17 @@ router.get('/activites',
         });
     });
 
+router.get('/activites/:id',
+    jwt({ secret: secretKey }),
+    (req, res) => {
+        db.query('SELECT * FROM activite WHERE id = ?', [req.params.id], (err, activite) => {
+            if (err) {
+                return res.status(500).send(err.message);
+            }
+            return res.json(activite[0]);
+        });
+    });
+
 router.get('/:association_id/activites', (req, res) => {
     db.query('SELECT * FROM activite WHERE association_id = ?', [req.params.association_id], (err, activite) => {
         if (err) {
@@ -25,9 +36,9 @@ router.get('/:association_id/activites', (req, res) => {
 });
 
 router.delete('/:association_id/activites/:activite_id',
-jwt({ secret: secretKey }),
-(req, res) => {
-    // récupérer activite avec id=activite_id
-    // verifier que le association_id de l'activité === req.user.id
-});
+    jwt({ secret: secretKey }),
+    (req, res) => {
+        // récupérer activite avec id=activite_id
+        // verifier que le association_id de l'activité === req.user.id
+    });
 module.exports = router;
