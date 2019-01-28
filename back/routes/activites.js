@@ -25,4 +25,25 @@ router.post('/activitesliste',
         });
     });
 
+router.put('/activitesliste/:id', (req, res) => {
+    db.query('UPDATE activite SET ? WHERE id = ?', [req.body, req.params.id], (err, result) => {
+        if (err) {
+            return res.status(500).json({
+                error: err.message,
+                errorDetails: err.sql
+            });
+        }
+        db.query('SELECT * FROM activite WHERE id = ?', [req.params.id], (err, activite) => {
+            if (err) {
+                return res.status(500).json({
+                    error: err.message,
+                    errorDetails: err.sql
+                });
+            }
+            return res.json(activite[0]);
+        })
+    })
+})
+
+
 module.exports = router;

@@ -9,7 +9,12 @@ import {
     createActiviteRequest,
     fetchSingleActiviteRequest,
     fetchSingleActiviteSuccess,
-    fetchSingleActiviteFailure
+    fetchSingleActiviteFailure,
+    formEditNewArticle, 
+    formExistingArticle,
+    updateActiviteRequest,
+    updateActiviteSuccess,
+    updateActiviteFailure
 } from '../actions/forms';
 
 class CreateProject extends Component {
@@ -29,11 +34,21 @@ class CreateProject extends Component {
     handleSubmit(event) {
         event.preventDefault();
         const { form, createActiviteSuccess, createActiviteFailure, createActiviteRequest } = this.props;
-        createActiviteRequest();
-        axios.post('/api/activites/activitesliste', form)
+        const { id } = this.props.match.params;
+        if (!id) {
+            createActiviteRequest();
+            axios.post('/api/activites/activitesliste', form)
+                .then(response => response.data)
+                .then(activite => createActiviteSuccess(activite))
+                .catch(error => createActiviteFailure(error));
+        } else {
+            const { updateActiviteRequest, updateActiviteSuccess, updateActiviteFailure } = this.props;
+            updateActiviteRequest();
+            axios.put(`/api/activites/activitesliste/${id}`, form)
             .then(response => response.data)
-            .then(activite => createActiviteSuccess(activite))
-            .catch(error => createActiviteFailure(error));
+            .then(activite => updateActiviteSuccess(activite))
+            .catch(error => updateActiviteFailure(error));
+        }
     }
 
     componentDidMount() {
@@ -42,55 +57,67 @@ class CreateProject extends Component {
             const {
                 fetchSingleActiviteRequest,
                 fetchSingleActiviteSuccess,
-                fetchSingleActiviteFailure
+                fetchSingleActiviteFailure,
+                formExistingArticle
             } = this.props;
             fetchSingleActiviteRequest();
             axios.get(`/api/associations/activites/${id}`)
             .then(response => response.data)
-            .then(activites => fetchSingleActiviteSuccess(activites))
+            .then(activites => {
+                fetchSingleActiviteSuccess(activites)
+                formExistingArticle(activites)
+            })   
             .catch(error => fetchSingleActiviteFailure(error));
+        } else {
+            const { formEditNewArticle } = this.props;
+            formEditNewArticle();
         }
     }
 
+
     render() {
-        const { title, date, prix, lieu, description, infos } = this.props.form;
+        if (!this.props.form){
+            return <div></div>
+        }
+        const { form } = this.props;
+        const { id } = this.props.match.params;
         return (
             <div>
-                <h1 className="projectTitle">Créer une activité</h1>
+                <h1 className="projectTitle">{ id ? 'Modifier une activité' : 'Créer une activité'}</h1>
                 <form className="d-flex flex-column justify-content-center" onSubmit={this.handleSubmit}>
 
                     <div className="form-group w-50">
                         <input
-                            onChange={this.handleChange} name="title" type="text" className="form-control" id="title" placeholder="Titre" value={title} ></input>
+                            onChange={this.handleChange} name="title" type="text" className="form-control" id="title" placeholder="Titre" value={form.title} ></input>
                     </div>
 
                     <div className="form-group w-50">
                         <input
-                            onChange={this.handleChange} name="date" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Date" value={date} ></input>
+                            onChange={this.handleChange} name="date" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Date" value={form.date} ></input>
                     </div>
 
                     <div className="form-group w-50">
                         <textarea
-                            onChange={this.handleChange} name="description" className="form-control" id="exampleFormControlTextarea1" rows="3" value={description}></textarea>
+                            onChange={this.handleChange} name="description" className="form-control" id="exampleFormControlTextarea1" rows="3" value={form.description}></textarea>
                     </div>
 
                     <div className="form-group w-50">
                         <input
-                            onChange={this.handleChange} name="lieu" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Lieu" value={lieu}></input>
+                            onChange={this.handleChange} name="lieu" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Lieu" value={form.lieu}></input>
                     </div>
 
                     <div className="form-group w-50">
                         <input
-                            onChange={this.handleChange} name="prix" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Prix" value={prix} ></input>
+                            onChange={this.handleChange} name="prix" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Prix" value={form.prix} ></input>
                     </div>
 
                     <div className="form-group w-50">
                         <input
-                            onChange={this.handleChange} name="infos" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Infos de réservation" value={infos}></input>
+                            onChange={this.handleChange} name="infos" type="text" className="form-control" id="formGroupExampleInput2" placeholder="Infos de réservation" value={form.infos}></input>
                     </div>
 
                     <div className="d-flex justify-content-center">
-                        <button className="my-4" type="submit" id="login-button">Valider</button>
+                        <button className="my-4" type="submit" id="login-button">{ id ? 'Mettre à jour' : 'Créer'}</button>
                     </div>
                 </form>
             </div>
@@ -99,17 +126,9 @@ class CreateProject extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const { title, description, prix, lieu, infos, activite, date } = state;
+    const { form } = state;
     return {
-        activite,
-        form: {
-            title,
-            date,
-            description,
-            prix,
-            lieu,
-            infos
-        }
+        form
     }
 };
 
@@ -120,7 +139,12 @@ const mapDispatchToProps = {
     createActiviteRequest,
     fetchSingleActiviteRequest,
     fetchSingleActiviteSuccess,
-    fetchSingleActiviteFailure
+    fetchSingleActiviteFailure,
+    formEditNewArticle,
+    formExistingArticle,
+    updateActiviteRequest,
+    updateActiviteSuccess,
+    updateActiviteFailure
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateProject);

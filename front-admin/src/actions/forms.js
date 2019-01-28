@@ -12,6 +12,15 @@ export const FETCH_SINGLE_ACTIVITE_REQUEST = 'FETCH_SINGLE_ACTIVITE_REQUEST';
 export const FETCH_SINGLE_ACTIVITE_SUCCESS = 'FETCH_SINGLE_ACTIVITE_SUCCESS';
 export const FETCH_SINGLE_ACTIVITE_FAILURE = 'FETCH_SINGLE_ACTIVITE_FAILURE';
 
+export const UPDATE_ACTIVITE_REQUEST = 'UPDATE_ACTIVITE_REQUEST';
+export const UPDATE_ACTIVITE_SUCCESS = 'UPDATE_ACTIVITE_SUCCESS';
+export const UPDATE_ACTIVITE_FAILURE = 'UPDATE_ACTIVITE_FAILURE';
+
+
+export const FORM_EDIT_NEW_ARTICLE = 'FORM_EDIT_NEW_ARTICLE';
+export const FORM_EXISTING_ARTICLE = 'FORM_EXISTING_ARTICLE';
+
+
 
 export const editorInputForm = (key, value) => ({
     type: EDITOR_INPUT_FORM,
@@ -64,5 +73,31 @@ export const fetchSingleActiviteSuccess = (activite) => ({
 
 export const fetchSingleActiviteFailure = (error) => ({
     type: FETCH_SINGLE_ACTIVITE_FAILURE,
+    error
+});
+
+export const formEditNewArticle = () => ({
+    type: FORM_EDIT_NEW_ARTICLE
+});
+
+export const formExistingArticle = (activite) => ({
+    type: FORM_EXISTING_ARTICLE,
+    activite
+});
+
+// update une activité
+
+
+export const updateActiviteRequest = () => ({
+    type: UPDATE_ACTIVITE_REQUEST
+})
+
+export const updateActiviteSuccess = (form) => ({
+    type: UPDATE_ACTIVITE_SUCCESS,
+    form
+});
+
+export const updateActiviteFailure = (error) => ({
+    type: UPDATE_ACTIVITE_FAILURE,
     error
 });
