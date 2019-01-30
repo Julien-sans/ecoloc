@@ -19,7 +19,8 @@ import {
     FETCH_ASSOCIATION_FAILURE,
     DELETE_ACTIVITE_REQUEST,
     DELETE_ACTIVITE_SUCCESS,
-    DELETE_ACTIVITE_FAILURE
+    DELETE_ACTIVITE_FAILURE,
+    AUTHENTIFICATION
 } from '../actions/forms';
 
 const initialState = {
@@ -27,7 +28,8 @@ const initialState = {
     activite: [],
     association: [],
     loading: false,
-    error: null
+    error: null,
+    auth: null
 }
 
 const newActivite = {
@@ -112,6 +114,11 @@ const reducer = (state = initialState, action) => {
         }
         case DELETE_ACTIVITE_FAILURE: {
             return { ...state, loading: false, error: action.error };
+        }
+
+        case AUTHENTIFICATION: {
+            const { isAuth } = action
+            return { ...state, auth: isAuth }
         }
 
         default:
