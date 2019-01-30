@@ -1,24 +1,13 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const authRouter = require('./routes/auth');
+const activitesRouter = require('./routes/activites');
+const associationRouter = require('./routes/association');
+const app = express();
 
-const app = express()
-
-const activites = [
-    {
-        id: 1,
-        title: 'Fabriquer ses produits d\'entretien',
-        date: 'Lundi 21 janvier 2019',
-        heureDebut: '18h30',
-        heureFin: '20h00',
-        association : 'Elément\'terre',
-        description: 'Atelier pour apprendre à réaliser vous même vos produits d\'entretien écologiques et économiques.',
-        prix: '10 euros/personne',
-        lieu: 'à définir',
-        infos: 'inscription sur http://cpieterrestoulousaines.org/ecologie-pratique'
-    }
-]
-
-app.get('/api/activites', (req, res) => {
-    res.json(activites);
-})
+app.use(bodyParser.json());
+app.use('/api/auth', authRouter);
+app.use('/api/activites', activitesRouter);
+app.use('/api/associations', associationRouter);
 
 app.listen(8000);

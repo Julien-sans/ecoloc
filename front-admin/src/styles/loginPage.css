@@ -1,0 +1,32 @@
+.loginPage{
+	min-height: calc(100vh);
+}
+
+.form{
+    width: 60%;
+    height: 35%;
+    font-family: 'Itim', cursive;
+}
+
+@keyframes filling {
+    from{
+      background-position: center 25%;
+    }
+    to {
+      background-position: center 50%;
+    }
+  }
+  
+  .container-text {
+    background-image:  url(https://static.pexels.com/photos/4827/nature-forest-trees-fog.jpeg);
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    color:  #FFFFFF;
+    padding-top: 20px;
+    font-size: 5em;
+    font-family: 'Baloo Thambi', cursive;
+    animation: filling 3s ease forwards;
+    width: auto;
+  }
+
+  

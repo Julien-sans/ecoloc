@@ -1,0 +1,48 @@
+.projectlist {
+    font-family: 'Itim', cursive;
+}
+
+.backgroundNatura {
+    -webkit-text-fill-color: transparent;
+    color:  #FFFFFF;
+    animation: filling 3s ease forwards;
+    margin-top: 100px;
+    width: 344px;
+    left: 0;
+    position: absolute;
+}
+
+.navigation{
+    position: relative;
+    top: 20px;
+    position: fixed;
+    min-height: 100vh;
+}
+
+.rightColumn,
+.leftColumn {
+    padding: 0px;
+    margin: 0;
+}
+
+@media (max-width: 992px) {
+    .navigation{
+       top: 0px;
+       min-height: 0;
+       position: static;
+       margin-bottom: 600px;
+    }
+
+    .backgroundNatura {
+        overflow: hidden;
+        width: 100%
+    }
+}
+
+.projectLink:hover {
+    text-decoration: none;
+}
+
+.assoName {
+    font-size: 2em;
+}
