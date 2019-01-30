@@ -20,7 +20,8 @@ import {
     DELETE_ACTIVITE_REQUEST,
     DELETE_ACTIVITE_SUCCESS,
     DELETE_ACTIVITE_FAILURE,
-    AUTHENTIFICATION
+    AUTHENTIFICATION,
+    REMOVE_AUTHENTIFICATION
 } from '../actions/forms';
 
 const initialState = {
@@ -119,6 +120,9 @@ const reducer = (state = initialState, action) => {
         case AUTHENTIFICATION: {
             const { isAuth } = action
             return { ...state, auth: isAuth }
+        }
+        case REMOVE_AUTHENTIFICATION: {
+            return { ...state, auth: null }
         }
 
         default:

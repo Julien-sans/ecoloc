@@ -28,6 +28,7 @@ export const DELETE_ACTIVITE_SUCCESS = 'DELETE_ACTIVITE_SUCCESS';
 export const DELETE_ACTIVITE_FAILURE = 'DELETE_ACTIVITE_FAILURE';
 
 export const AUTHENTIFICATION = 'AUTHENTIFICATION';
+export const REMOVE_AUTHENTIFICATION = 'REMOVE_AUTHENTIFICATION';
 
 
 export const editorInputForm = (key, value) => ({
@@ -148,4 +149,8 @@ export const deleteActiviteFailure = (error) => ({
 export const authentification = (isAuth) => ({
     type: AUTHENTIFICATION,
     isAuth
+});
+
+export const removeAuthentification = () => ({
+    type: REMOVE_AUTHENTIFICATION,
 })

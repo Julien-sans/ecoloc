@@ -21,7 +21,9 @@ import {
     fetchAssociationFailure,
     deleteActiviteRequest,
     deleteActiviteSuccess,
-    deleteActiviteFailure
+    deleteActiviteFailure,
+    authentification,
+    removeAuthentification
 } from '../actions/forms';
 import '../styles/projectList.css'
 import image from '../styles/earth-158806_960_720.png';
@@ -63,7 +65,9 @@ class ProjectList extends Component {
     }
 
     disconnect = () => {
+        const { removeAuthentification } = this.props;
         localStorage.removeItem('token');
+        removeAuthentification();
         delete axios.defaults.headers.authorization;
         this.props.history.push("/");
     }
@@ -151,7 +155,9 @@ const mapDispatchToProps = {
     fetchAssociationFailure,
     deleteActiviteRequest,
     deleteActiviteSuccess,
-    deleteActiviteFailure
+    deleteActiviteFailure,
+    authentification,
+    removeAuthentification
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectList);
