@@ -45,5 +45,15 @@ router.put('/activitesliste/:id', (req, res) => {
     })
 })
 
+router.delete('/activitesliste/:id', (req, res) => {
+    db.query('DELETE FROM activite where id = ?', [req.params.id], (err, activite) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Erreur lors de la suppression d'une activité");
+        } else {
+            res.sendStatus(200);
+        }
+    });
+});
 
 module.exports = router;

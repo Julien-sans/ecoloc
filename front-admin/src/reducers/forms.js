@@ -16,7 +16,10 @@ import {
     UPDATE_ACTIVITE_FAILURE,
     FETCH_ASSOCIATION_REQUEST,
     FETCH_ASSOCIATION_SUCCESS,
-    FETCH_ASSOCIATION_FAILURE
+    FETCH_ASSOCIATION_FAILURE,
+    DELETE_ACTIVITE_REQUEST,
+    DELETE_ACTIVITE_SUCCESS,
+    DELETE_ACTIVITE_FAILURE
 } from '../actions/forms';
 
 const initialState = {
@@ -98,6 +101,16 @@ const reducer = (state = initialState, action) => {
         case FETCH_ASSOCIATION_SUCCESS:
             return { ...state, association: action.association, loading: false };
         case FETCH_ASSOCIATION_FAILURE: {
+            return { ...state, loading: false, error: action.error };
+        }
+
+        case DELETE_ACTIVITE_REQUEST:
+            return { ...state, loading: true };
+        case DELETE_ACTIVITE_SUCCESS: {
+            const activite = state.activite.filter(activite => activite.id !== action.activiteId);
+            return { ...state, activite: activite, loading: false };
+        }
+        case DELETE_ACTIVITE_FAILURE: {
             return { ...state, loading: false, error: action.error };
         }
 

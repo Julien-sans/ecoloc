@@ -18,13 +18,21 @@ import {
     fetchActiviteRequest,
     fetchAssociationRequest,
     fetchAssociationSuccess,
-    fetchAssociationFailure
+    fetchAssociationFailure,
+    deleteActiviteRequest,
+    deleteActiviteSuccess,
+    deleteActiviteFailure
 } from '../actions/forms';
 import '../styles/projectList.css'
 import image from '../styles/earth-158806_960_720.png';
 
 
 class ProjectList extends Component {
+
+    constructor(props) {
+        super(props);
+        this.removeActivite = this.removeActivite.bind(this);
+    }
 
     componentDidMount() {
         // const { association_id } = this.props.match.params;
@@ -60,6 +68,15 @@ class ProjectList extends Component {
         this.props.history.push("/");
     }
 
+    removeActivite = (id) => {
+        const { deleteActiviteRequest, deleteActiviteSuccess, deleteActiviteFailure } = this.props;
+        deleteActiviteRequest();
+        axios.delete(`api/activites/activitesliste/${id}`)
+            .then(response => response.data)
+            .then(() => deleteActiviteSuccess(id))
+            .catch(error => deleteActiviteFailure(error));
+    }
+
     render() {
         const { activite, association } = this.props;
 
@@ -83,24 +100,28 @@ class ProjectList extends Component {
                         </Col>
                         <Col md='12' lg='6' className='rightColumn'>
                             <h1 className="text-center my-4">Mes activités</h1>
-                            <hr className="mb-4"/>
+                            <hr className="mb-4" />
                             {
                                 activite.map((activite, key) =>
                                     <Col md='12' key={key} className="my-3">
                                         <Card outline>
                                             <div className="card-header text-center">{activite.title}</div>
-
-                                            <CardTitle className="cardHeader"></CardTitle>
-                                            <CardSubtitle className="my-2">Evénement créé le - {activite.date_publication[key]}</CardSubtitle>
-                                            <CardSubtitle className="my-2">Date de l'événement - {activite.date}</CardSubtitle>
-                                            <CardText>Description - {activite.description}</CardText>
-                                            <CardText>Lieu - {activite.lieu}</CardText>
-                                            <CardText>Prix - {activite.prix}</CardText>
-                                            <CardText>Infos - {activite.infos}</CardText>
+                                            <div className="p-2">
+                                                <CardTitle className="cardHeader"></CardTitle>
+                                                <CardSubtitle className="my-2">Evénement créé le - {activite.date_publication}</CardSubtitle>
+                                                <CardSubtitle className="my-2">Date de l'événement - {activite.date}</CardSubtitle>
+                                                <CardText className="text-center mt-4">Description</CardText>
+                                                <CardText>{activite.description}</CardText>
+                                                <CardText>Lieu - {activite.lieu}</CardText>
+                                                <CardText>Prix - {activite.prix}</CardText>
+                                                <CardText>Infos - {activite.infos}</CardText>
+                                            </div>
                                             <div className="card-footer d-flex flex-row-reverse">
                                                 <Button className="btn-warning mx-3"><Link className="projectLink text-white" to={`/editproject/${activite.id}`}>Editer l'activité</Link></Button>
-                                                <Button className="btn-danger mx-3">Supprimer</Button>
+                                                <Button onClick={() => this.removeActivite(activite.id)} className="btn-danger mx-3">Supprimer</Button>
                                             </div>
+
+
                                         </Card>
                                     </Col>
                                 )
@@ -127,7 +148,10 @@ const mapDispatchToProps = {
     fetchActiviteFailure,
     fetchAssociationRequest,
     fetchAssociationSuccess,
-    fetchAssociationFailure
+    fetchAssociationFailure,
+    deleteActiviteRequest,
+    deleteActiviteSuccess,
+    deleteActiviteFailure
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectList);

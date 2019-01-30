@@ -23,6 +23,10 @@ export const FETCH_ASSOCIATION_REQUEST = 'FETCH_ASSOCIATION_REQUEST';
 export const FETCH_ASSOCIATION_SUCCESS = 'FETCH_ASSOCIATION_SUCCESS';
 export const FETCH_ASSOCIATION_FAILURE = 'FETCH_ASSOCIATION_FAILURE';
 
+export const DELETE_ACTIVITE_REQUEST = 'DELETE_ACTIVITE_REQUEST';
+export const DELETE_ACTIVITE_SUCCESS = 'DELETE_ACTIVITE_SUCCESS';
+export const DELETE_ACTIVITE_FAILURE = 'DELETE_ACTIVITE_FAILURE';
+
 
 export const editorInputForm = (key, value) => ({
     type: EDITOR_INPUT_FORM,
@@ -118,5 +122,21 @@ export const fetchAssociationSuccess = (association) => ({
 
 export const fetchAssociationFailure = (error) => ({
     type: FETCH_ASSOCIATION_FAILURE,
+    error
+});
+
+// supprimer une activité
+
+export const deleteActiviteRequest = () => ({
+    type: DELETE_ACTIVITE_REQUEST
+})
+
+export const deleteActiviteSuccess = (activiteId) => ({
+    type: DELETE_ACTIVITE_SUCCESS,
+    activiteId
+});
+
+export const deleteActiviteFailure = (error) => ({
+    type: DELETE_ACTIVITE_FAILURE,
     error
 });
