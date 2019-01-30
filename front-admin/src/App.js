@@ -18,12 +18,12 @@ class App extends Component {
               path="/"
               component={LoginPage}
             />
-            <Route
+            <ProtectedRoutes
               exact
               path="/createproject"
               component={CreateProject}
             />
-            <Route
+            <ProtectedRoutes
               exact
               path="/editproject/:id"
               component={CreateProject}
@@ -33,7 +33,7 @@ class App extends Component {
               path="/projectlist/:association_id"
               component={ProjectList}
             /> */}
-            <Route
+            <ProtectedRoutes
               exact
               path="/projectlist"
               component={ProjectList}

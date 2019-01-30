@@ -27,6 +27,8 @@ export const DELETE_ACTIVITE_REQUEST = 'DELETE_ACTIVITE_REQUEST';
 export const DELETE_ACTIVITE_SUCCESS = 'DELETE_ACTIVITE_SUCCESS';
 export const DELETE_ACTIVITE_FAILURE = 'DELETE_ACTIVITE_FAILURE';
 
+export const AUTHENTIFICATION = 'AUTHENTIFICATION';
+
 
 export const editorInputForm = (key, value) => ({
     type: EDITOR_INPUT_FORM,
@@ -140,3 +142,10 @@ export const deleteActiviteFailure = (error) => ({
     type: DELETE_ACTIVITE_FAILURE,
     error
 });
+
+// routes protégées
+
+export const authentification = (isAuth) => ({
+    type: AUTHENTIFICATION,
+    isAuth
+})

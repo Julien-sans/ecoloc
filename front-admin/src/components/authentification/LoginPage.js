@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import jwt_decode from 'jwt-decode';
 import { Container, Row, Col } from 'reactstrap';
 import axios from 'axios';
-import '../../styles/loginPage.css'
+import '../../styles/loginPage.css';
+import { connect } from 'react-redux';
+import {
+    authentification
+} from '../../actions/forms';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -21,10 +25,12 @@ class LoginPage extends Component {
   }
 
   handleSubmitSignIn = (event) => {
+    const { authentification } = this.props;
     event.preventDefault()
     axios.post("/api/auth/signin", this.state)
       .then(res => res.data)
       .then(res => {
+        authentification(res);
         localStorage.setItem('token', res.token);
         axios.defaults.headers.authorization = `Bearer ${res.token}`;
         this.props.history.push("/projectlist");
@@ -47,11 +53,11 @@ class LoginPage extends Component {
               <div className="container-text mx-auto">Ecolo'Occ</div>
               <form onSubmit={this.handleSubmitSignIn} className="border rounded form my-5 mx-auto">
                 <h2 className="mt-5 text-center">Je me connecte</h2>
-                <div class="form-group w-75 mx-auto mt-5">
-                  <input onChange={this.updateField} type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Entrez votre email"></input>
+                <div className="form-group w-75 mx-auto mt-5">
+                  <input onChange={this.updateField} type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Entrez votre email"></input>
                 </div>
-                <div class="form-group w-75 mx-auto">
-                  <input onChange={this.updateField} name="password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Mot de passe"></input>
+                <div className="form-group w-75 mx-auto">
+                  <input onChange={this.updateField} name="password" type="password" className="form-control" id="exampleInputPassword1" placeholder="Mot de passe"></input>
                 </div>
                 {errorAuth ? <h2>{errorAuth}</h2> : ''}
                 <div className="d-flex justify-content-center">
@@ -68,4 +74,15 @@ class LoginPage extends Component {
   }
 }
 
-export default LoginPage;
+const mapStateToProps = (state) => {
+  const { auth } = state;
+  return {
+      auth
+  }
+};
+
+const mapDispatchToProps = {
+  authentification
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
