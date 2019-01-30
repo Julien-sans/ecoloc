@@ -4,6 +4,15 @@ const router = express.Router();
 const jwt = require('express-jwt');
 const { secretKey } = require('../settings.json');
 
+router.get('/', (req, res) => {
+    db.query('SELECT * FROM association', (err, association) => {
+        if (err) {
+            return res.status(500).send(err.message);
+        }
+        res.json(association);
+    });
+});
+
 router.get('/activites',
     jwt({ secret: secretKey }),
     (req, res) => {
@@ -43,6 +52,4 @@ router.delete('/:association_id/activites/:activite_id',
         // récupérer activite avec id=activite_id
         // verifier que le association_id de l'activité === req.user.id
     });
-
-    
 module.exports = router;

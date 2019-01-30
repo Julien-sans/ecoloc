@@ -13,12 +13,16 @@ import {
     FORM_EXISTING_ARTICLE,
     UPDATE_ACTIVITE_REQUEST,
     UPDATE_ACTIVITE_SUCCESS,
-    UPDATE_ACTIVITE_FAILURE
+    UPDATE_ACTIVITE_FAILURE,
+    FETCH_ASSOCIATION_REQUEST,
+    FETCH_ASSOCIATION_SUCCESS,
+    FETCH_ASSOCIATION_FAILURE
 } from '../actions/forms';
 
 const initialState = {
     form: null,
     activite: [],
+    association: [],
     loading: false,
     error: null
 }
@@ -82,13 +86,20 @@ const reducer = (state = initialState, action) => {
         case UPDATE_ACTIVITE_REQUEST:
             return { ...state, loading: true };
         case UPDATE_ACTIVITE_SUCCESS: {
-            const activite = state.activite.map(act => act.id === action.activite.id ? { ...action.activite} : { ...act} );
+            const activite = state.activite.map(act => act.id === action.activite.id ? { ...action.activite } : { ...act });
             return { ...state, activite }
         }
 
         case UPDATE_ACTIVITE_FAILURE:
             return { ...state, loading: false, error: action.error };
 
+        case FETCH_ASSOCIATION_REQUEST:
+            return { ...state, loading: true };
+        case FETCH_ASSOCIATION_SUCCESS:
+            return { ...state, association: action.association, loading: false };
+        case FETCH_ASSOCIATION_FAILURE: {
+            return { ...state, loading: false, error: action.error };
+        }
 
         default:
             return state

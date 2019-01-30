@@ -1,25 +1,30 @@
 import React, { Component } from 'react';
-import { 
-    Card, 
-    CardTitle, 
-    Container, 
-    Row, 
-    CardSubtitle, 
-    CardText, 
-    Col, 
-    Button } from 'reactstrap';
+import {
+    Card,
+    CardTitle,
+    Container,
+    Row,
+    CardSubtitle,
+    CardText,
+    Col,
+    Button
+} from 'reactstrap';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
     fetchActiviteSuccess,
     fetchActiviteFailure,
-    fetchActiviteRequest
+    fetchActiviteRequest,
+    fetchAssociationRequest,
+    fetchAssociationSuccess,
+    fetchAssociationFailure
 } from '../actions/forms';
+import '../styles/projectList.css'
+import image from '../styles/earth-158806_960_720.png';
 
 
 class ProjectList extends Component {
-
 
     componentDidMount() {
         // const { association_id } = this.props.match.params;
@@ -31,12 +36,22 @@ class ProjectList extends Component {
         // }
         // else {
         // }
-        const { fetchActiviteRequest, fetchActiviteSuccess,  fetchActiviteFailure } = this.props;
+        this.fetchAssociation();
+        const { fetchActiviteRequest, fetchActiviteSuccess, fetchActiviteFailure } = this.props;
         fetchActiviteRequest();
         axios.get(`/api/associations/activites`)
             .then(response => response.data)
             .then(activites => fetchActiviteSuccess(activites))
             .catch(error => fetchActiviteFailure(error));
+    }
+
+    fetchAssociation() {
+        const { fetchAssociationRequest, fetchAssociationSuccess, fetchAssociationFailure } = this.props;
+        fetchAssociationRequest();
+        axios.get(`/api/associations/`)
+            .then(response => response.data)
+            .then(association => fetchAssociationSuccess(association))
+            .catch(error => fetchAssociationFailure(error));
     }
 
     disconnect = () => {
@@ -46,36 +61,51 @@ class ProjectList extends Component {
     }
 
     render() {
-        const { activite } = this.props;
-        console.log(activite)
-        return (
-            <div>
-                <nav className="navbar sticky-top navbar-light bg-light">
-                    <a className="navbar-brand" href="/">Ecolo'Occ</a>
-                    <button type="button" className="btn btn-success"><Link to='/createproject'>Créer un Projet</Link></button>
-                    <button onClick={this.disconnect} type="button" className="btn btn-danger">Se déconnecter</button>
-                </nav>
-                <h1 className="text-center">Mes Activités</h1>
-                <Container fluid>
-                    <Row>
-                        {
-                            activite.map((activite, key) =>
-                                <Col md='4' key={key} className="my-3">
-                                    <Card className="mx-auto" outline color="success">
-                                        <CardTitle>{activite.title}</CardTitle>
-                                        <CardSubtitle>{activite.date_publication}</CardSubtitle>
-                                        <CardSubtitle>{activite.date}</CardSubtitle>
-                                        <CardText>{activite.description}</CardText>
-                                        <CardText>{activite.lieu}</CardText>
-                                        <CardText>{activite.prix}</CardText>
-                                        <CardText>{activite.infos}</CardText>
-                                        <Link to={`/editproject/${activite.id}`}>Editer l'activité</Link>
-                                        <Button>Supprimer</Button>
-                                    </Card>
-                                </Col>
-                            )
-                        }
+        const { activite, association } = this.props;
 
+        return (
+            <div className='projectlist'>
+                <Container>
+                    <Row>
+                        <Col xs='12' md='6' className="leftColumn d-flex justify-content-center">
+
+                            <div className='navigation'>
+                                <div className="container-text mx-auto">Ecolo'Occ</div>
+                                <div className="text-center assoName mb-4">{association.length > 0 && association[0].association}</div>
+                                <div className="d-flex justify-content-center">
+                                    <button type="button" className="btn btn-success mx-3"><Link className="text-white projectLink" to='/createproject'>Créer un Projet</Link></button>
+                                    <button onClick={this.disconnect} type="button" className="btn btn-danger mx-3">Se déconnecter</button>
+                                    <img src={image} className="backgroundNatura" alt="logo" />
+
+                                </div>
+                            </div>
+
+                        </Col>
+                        <Col md='12' lg='6' className='rightColumn'>
+                            <h1 className="text-center my-4">Mes activités</h1>
+                            <hr className="mb-4"/>
+                            {
+                                activite.map((activite, key) =>
+                                    <Col md='12' key={key} className="my-3">
+                                        <Card outline>
+                                            <div className="card-header text-center">{activite.title}</div>
+
+                                            <CardTitle className="cardHeader"></CardTitle>
+                                            <CardSubtitle className="my-2">Evénement créé le - {activite.date_publication[key]}</CardSubtitle>
+                                            <CardSubtitle className="my-2">Date de l'événement - {activite.date}</CardSubtitle>
+                                            <CardText>Description - {activite.description}</CardText>
+                                            <CardText>Lieu - {activite.lieu}</CardText>
+                                            <CardText>Prix - {activite.prix}</CardText>
+                                            <CardText>Infos - {activite.infos}</CardText>
+                                            <div className="card-footer d-flex flex-row-reverse">
+                                                <Button className="btn-warning mx-3"><Link className="projectLink text-white" to={`/editproject/${activite.id}`}>Editer l'activité</Link></Button>
+                                                <Button className="btn-danger mx-3">Supprimer</Button>
+                                            </div>
+                                        </Card>
+                                    </Col>
+                                )
+                            }
+                        </Col>
                     </Row>
                 </Container>
             </div>
@@ -84,16 +114,20 @@ class ProjectList extends Component {
 }
 
 const mapStateToProps = state => {
-    const { activite } = state;
+    const { activite, association } = state;
     return {
-        activite
+        activite,
+        association
     }
 }
 
 const mapDispatchToProps = {
     fetchActiviteRequest,
     fetchActiviteSuccess,
-    fetchActiviteFailure
+    fetchActiviteFailure,
+    fetchAssociationRequest,
+    fetchAssociationSuccess,
+    fetchAssociationFailure
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectList);

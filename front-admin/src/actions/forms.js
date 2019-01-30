@@ -16,10 +16,12 @@ export const UPDATE_ACTIVITE_REQUEST = 'UPDATE_ACTIVITE_REQUEST';
 export const UPDATE_ACTIVITE_SUCCESS = 'UPDATE_ACTIVITE_SUCCESS';
 export const UPDATE_ACTIVITE_FAILURE = 'UPDATE_ACTIVITE_FAILURE';
 
-
 export const FORM_EDIT_NEW_ARTICLE = 'FORM_EDIT_NEW_ARTICLE';
 export const FORM_EXISTING_ARTICLE = 'FORM_EXISTING_ARTICLE';
 
+export const FETCH_ASSOCIATION_REQUEST = 'FETCH_ASSOCIATION_REQUEST';
+export const FETCH_ASSOCIATION_SUCCESS = 'FETCH_ASSOCIATION_SUCCESS';
+export const FETCH_ASSOCIATION_FAILURE = 'FETCH_ASSOCIATION_FAILURE';
 
 
 export const editorInputForm = (key, value) => ({
@@ -99,5 +101,22 @@ export const updateActiviteSuccess = (form) => ({
 
 export const updateActiviteFailure = (error) => ({
     type: UPDATE_ACTIVITE_FAILURE,
+    error
+});
+
+
+// Lire le contenu du tableau des associations
+
+export const fetchAssociationRequest = () => ({
+    type: FETCH_ASSOCIATION_REQUEST
+})
+
+export const fetchAssociationSuccess = (association) => ({
+    type: FETCH_ASSOCIATION_SUCCESS,
+    association
+});
+
+export const fetchAssociationFailure = (error) => ({
+    type: FETCH_ASSOCIATION_FAILURE,
     error
 });
