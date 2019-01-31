@@ -59,7 +59,7 @@ class LoginPage extends Component {
                 <div className="form-group w-75 mx-auto">
                   <input onChange={this.updateField} name="password" type="password" className="form-control" id="exampleInputPassword1" placeholder="Mot de passe"></input>
                 </div>
-                {errorAuth ? <h2>{errorAuth}</h2> : ''}
+                {errorAuth ? <h4 className="text-center my-3">{errorAuth}</h4> : ''}
                 <div className="d-flex justify-content-center">
                   <button type="submit" className="btn btn-primary mb-5">
                     Se connecter
